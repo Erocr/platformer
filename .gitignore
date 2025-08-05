@@ -1,3 +1,4 @@
 # Erocr
 venv
 .idea/*
+__pycache__/*
