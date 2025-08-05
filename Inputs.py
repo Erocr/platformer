@@ -3,6 +3,12 @@ from Vec import *
 
 
 class Inputs:
+    """
+    In the architecture MVC (Model View Controller), Inputs is the Controller.
+    So it's one of the greatest and more high-level class.
+
+    Warning: think to call update once per frame
+    """
     def __init__(self):
         # keysPressed, keysReleased and keysHolding are sets of pygame key ids
         # For example, pg.K_RIGHT is pygame key id
