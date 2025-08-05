@@ -7,6 +7,8 @@ class Inputs:
     In the architecture MVC (Model View Controller), Inputs is the Controller.
     So it's one of the greatest and more high-level class.
 
+    Inputs must manage all the inputs of the player.
+
     Warning: think to call update once per frame
     """
     def __init__(self):
