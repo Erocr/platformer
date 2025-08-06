@@ -10,12 +10,13 @@ class Hitbox:
         return Vec(0, 0)
 
 
-class ConvexPolygon:
+class ConvexPolygon(Hitbox):
     """ It is a hitbox with the shape of a convex polygon """
     def __init__(self, points: list[Vec]):
         self.points = points
         assert len(self.points) >= 3, "A polygon must have at least 3 vertices"
         assert self.__is_convex(), "ConvexPolygon shall be a convex polygon !"
+        self.__pos_top_left = sum(self.points) / len(self.points)
 
     def __is_convex(self) -> bool:
         direction = (self.points[-1] - self.points[-2]).at_his_right(self.points[0] - self.points[-1])
@@ -26,6 +27,15 @@ class ConvexPolygon:
                 return False
         return True
 
+    @property
+    def pos_top_left(self):
+        return self.__pos_top_left
+
+    def move(self, v):
+        self.__pos_top_left += v
+        for i in range(len(self.points)):
+            self.points[i] += v
+
 
 def Rectangle(pos_top_left, size) -> ConvexPolygon:
     points = [
@@ -35,5 +45,3 @@ def Rectangle(pos_top_left, size) -> ConvexPolygon:
         pos_top_left + Vec(0, size.y)
     ]
     return ConvexPolygon(points)
-
-
