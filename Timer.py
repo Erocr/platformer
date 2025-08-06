@@ -5,7 +5,7 @@ class Timer:
     """
     Says when a certain amount of time has passed
     """
-    def __init__(self, duration):
+    def __init__(self, duration=-1):
         """
         :param duration: the duration of the timer. Puts a negative number for infinity
         """
@@ -20,7 +20,7 @@ class Timer:
     def increment_timer(self, incrementation):
         self.__time_end += incrementation
 
-    def new_duration(self, duration):
+    def set_duration(self, duration):
         """ Reset the timer with the new_duration. It forgets the past duration. """
         if duration < 0:
             self.__time_end = -1

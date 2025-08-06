@@ -1,4 +1,5 @@
 from Vec import *
+from Timer import Timer
 import pygame as pg
 import os
 
@@ -34,6 +35,11 @@ class ImageHandler:
             self.__images[image] = Image(image)
             return self.__images[image].im
 
+    def check_unuseful_images(self):
+        for image in list(self.__images.keys()):
+            if self.__images[image].must_be_destroyed():
+                self.__images.pop(image)
+
 
 class Image:
     TIME_INACTION_MAX = 30
@@ -48,13 +54,14 @@ class Image:
         self.im: pg.Surface
         self.resize(factor)
 
+        self.timer = Timer()
         self.increment_timer()
 
     def must_be_destroyed(self) -> bool:
-        pass
+        return self.timer.is_finished()
 
     def increment_timer(self):
-        pass
+        self.timer.set_duration(self.TIME_INACTION_MAX)
 
     def resize(self, factor: Vec):
         self.im = pg.transform.scale_by(self.raw, factor.get())
