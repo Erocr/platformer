@@ -45,7 +45,7 @@ class Image:
     TIME_INACTION_MAX = 30
 
     def __init__(self, file_path: str, factor=Vec(1, 1), with_extension=False):
-        file_path = 'images/' + file_path
+        file_path = '../images/' + file_path
         if not with_extension:
             file_path = file_path + "." + self.__find_extension(file_path)
 

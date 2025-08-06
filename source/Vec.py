@@ -77,6 +77,22 @@ class Vec:
         """ A vector with x and y values truncated """
         return Vec(int(self.__x), int(self.__y))
 
+    def rotate90_clockwise(self):
+        return Vec(-self.__y, self.__x)
+
+    def rotate90_anticlockwise(self):
+        return -self.rotate90_clockwise()
+
+    def at_his_right(self, v):
+        """
+        Returns if v is pointing to his right
+        For example, (1, 0)(RIGHT) is pointing to the right of (0, -1)(UP)
+        and (-1, 0)(LEFT) is pointing to the right of (0, 1)(DOWN)
+
+        If v points at the same direction or in the opposite direction, it will return False
+        """
+        return dot(self.rotate90_clockwise(), v) > 0
+
 
     def __hash__(self):
         return hash((self.__x, self.__y))

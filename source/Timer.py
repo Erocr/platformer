@@ -21,7 +21,7 @@ class Timer:
         self.__time_end += incrementation
 
     def set_duration(self, duration):
-        """ Reset the timer with the new_duration. It forgets the past duration. """
+        """ Reset the timer with the new_duration. It forgets the past duration. The new duration is starting now """
         if duration < 0:
             self.__time_end = -1
         else:
