@@ -93,6 +93,12 @@ class Vec:
         """
         return dot(self.rotate90_clockwise(), v) > 0
 
+    def project(self, axe, starting_pos=None):
+        """ Returns the t value in the equation `starting_pos` + t * `axe` = projected_point """
+        v = self
+        if starting_pos is not None:
+            v = self - starting_pos
+        return dot(v, axe)
 
     def __hash__(self):
         return hash((self.__x, self.__y))

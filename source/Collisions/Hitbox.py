@@ -27,10 +27,13 @@ class ConvexPolygon:
         return True
 
 
-if __name__ == "__main__":
-    p = ConvexPolygon([Vec(1, 1), Vec(1, -1), Vec(-1, -1), Vec(-1, 1)])
-    try:
-        p = ConvexPolygon([Vec(1, 1), Vec(1, -1), Vec(-1, 1), Vec(-1, -1)])
-        print("He must raise an Error !")
-    except AssertionError:
-        pass
+def Rectangle(pos_top_left, size) -> ConvexPolygon:
+    points = [
+        pos_top_left,
+        pos_top_left + Vec(size.x, 0),
+        pos_top_left + size,
+        pos_top_left + Vec(0, size.y)
+    ]
+    return ConvexPolygon(points)
+
+
