@@ -1,3 +1,9 @@
+from Vec import *
+from WorldObjects.Player import *
+from WorldObjects.Platform import *
+from Collisions.collision import *
+
+
 class Model:
     """
     In the architecture MVC (Model View Controller), Model is the Model.
@@ -7,6 +13,44 @@ class Model:
 
     The classes used by Model must have an `update` method and a `draw` method.
     The `update` method must update the values of the object using the inputs of the player.
-    The `draw` method must create all the outputs made by the Object. It's important that he MUST NOT change values in
-    the Object. We don't want side effects.
     """
+    def __init__(self):
+        self.__fixes = []
+        self.__movables = []
+        self.__worldObjects = []
+        self.player = self.add_world_object(Player(Vec(100, 100)))
+        self.add_world_object(Platform([
+            Vec(0, 200), Vec(250, 250),
+            Vec(250, 300), Vec(0, 250)
+        ]))
+
+# update ---------------------------------------------------------------------------------------------------------------
+    def update(self, inputs):
+        for world_object in self.__worldObjects:
+            world_object.update(inputs)
+        resolve_collisions(self.__fixes, self.__movables)
+
+# hitboxes management --------------------------------------------------------------------------------------------------
+    def add_hitbox(self, hitbox):
+        if hitbox.fix:
+            self.__fixes.append(hitbox)
+        else:
+            self.__movables.append(hitbox)
+
+    def remove_hitbox(self, hitbox):
+        if hitbox.fix:
+            self.__fixes.remove(hitbox)
+        else:
+            self.__movables.remove(hitbox)
+
+    @property
+    def hitboxes(self):
+        return self.__fixes + self.__movables
+
+# WorldObject management -----------------------------------------------------------------------------------------------
+
+    def add_world_object(self, world_object):
+        self.__worldObjects.append(world_object)
+        for hitbox in world_object.get_hitboxes():
+            self.add_hitbox(hitbox)
+        return world_object
