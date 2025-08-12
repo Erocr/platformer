@@ -1,4 +1,3 @@
-from Vec import *
 from WorldObjects.Player import *
 from WorldObjects.Platform import *
 from Collisions.collision import *
@@ -18,11 +17,12 @@ class Model:
         self.__fixes = []
         self.__movables = []
         self.__worldObjects = []
-        self.player = self.add_world_object(Player(Vec(100, 100)))
+        self.player = self.add_world_object(Player(Vec(-20, 100)))
         self.add_world_object(Platform([
             Vec(0, 200), Vec(250, 250),
             Vec(250, 300), Vec(0, 250)
         ]))
+        self.add_world_object(AxisAlignedPlatform(Vec(250, 0), Vec(50, 300)))
 
 # update ---------------------------------------------------------------------------------------------------------------
     def update(self, inputs):

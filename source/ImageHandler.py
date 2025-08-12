@@ -1,4 +1,4 @@
-from Vec import *
+from Math.Vec import *
 from Timer import Timer
 import pygame as pg
 import os

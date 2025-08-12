@@ -1,7 +1,6 @@
 import pygame as pg
-import sys
 from View.Drawer import Drawer
-from Vec import *
+from Math.Vec import *
 
 
 class View:

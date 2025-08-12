@@ -1,4 +1,4 @@
-from Vec import *
+from Math.Vec import *
 
 
 class WorldObject:
@@ -17,12 +17,15 @@ class WorldObject:
 
 # movement methods -----------------------------------------------------------------------------------------------------
 
-    def move(self, v: Vec, who_wants=None):
+    def move(self, v: Vec, who_wants=None, with_collision_control=True):
         """
         It moves the world object of v. It also moves all his connected hitboxes.
 
-        who_wants describe which class did call this function. It is used in order to prevent infinite loops.
+        :param v: The vector describing the movement
+        :param who_wants: which class did call this function. It is used in order to prevent infinite loops.
         In fact, this function calls the move function of hitboxes, which move all the connected worldObjects.
+        :param with_collision_control: It must not be disabled, unless you want it to teleport, or it is used in the
+        collision's functions.
         """
         for hitbox in self.__connected_hitboxes:
             if hitbox != who_wants:

@@ -1,6 +1,6 @@
-from Vec import *
 from WorldObjects.WorldObject import *
 from Collisions.Hitbox import Rectangle
+import pygame as pg
 
 
 class Player(WorldObject):
@@ -11,3 +11,7 @@ class Player(WorldObject):
 
     def update(self, inputs):
         self.move(Vec(0, 1))
+        if inputs.get_holding(pg.K_RIGHT):
+            self.move(Vec(1, 0))
+        if inputs.get_holding(pg.K_LEFT):
+            self.move(Vec(-1, 0))

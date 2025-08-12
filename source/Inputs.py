@@ -1,5 +1,5 @@
 import pygame as pg
-from Vec import *
+from Math.Vec import *
 
 
 class Inputs:

@@ -1,4 +1,4 @@
-from source.Vec import *
+from Math.Vec import *
 
 
 class Hitbox:
@@ -9,23 +9,31 @@ class Hitbox:
 
     You can connect a hitbox to a WorldObject. So, when you move the hitbox, it moves the worldObject too.
     """
-    speed = Vec(0, 0)
-
     def __init__(self, fix=True):
         self.__fix = fix  # Must not be changed after creation !!
         self.worldObjectsConnected = []
+        self.speed = Vec(0, 0)
+
+# getter ---------------------------------------------------------------------------------------------------------------
 
     @property
     def fix(self):
         return self.__fix
 
-    def move(self, v, who_wants=None):
-        for worldObject in self.worldObjectsConnected:
-            if who_wants != worldObject:
-                worldObject.move(v, who_wants=self)
+# virtual methods ------------------------------------------------------------------------------------------------------
+
+    def move(self, v, who_wants=None, with_collision_control=True):
+        if not with_collision_control:
+            for worldObject in self.worldObjectsConnected:
+                if who_wants != worldObject:
+                    worldObject.move(v, who_wants=self)
+        else:
+            self.speed += v
 
     def draw(self, drawer):
         assert False, "forgot to implement the draw function !"
+
+# world objects management ---------------------------------------------------------------------------------------------
 
     def connect_world_object(self, worldObject, both_sides=False):
         self.worldObjectsConnected.append(worldObject)
@@ -41,6 +49,10 @@ class Hitbox:
         return worldObject in self.worldObjectsConnected
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Hitboxes examples ----------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------
+
 class ConvexPolygon(Hitbox):
     """ It is a hitbox with the shape of a convex polygon """
     def __init__(self, points: list[Vec], fix=True):
@@ -48,7 +60,6 @@ class ConvexPolygon(Hitbox):
         self.points = points
         assert len(self.points) >= 3, "A polygon must have at least 3 vertices"
         assert self.__is_convex(), "ConvexPolygon shall be a convex polygon !"
-        self.__pos_top_left = sum(self.points, start=Vec(0, 0)) / len(self.points)
 
     def __is_convex(self) -> bool:
         direction = (self.points[-1] - self.points[-2]).at_his_right(self.points[0] - self.points[-1])
@@ -59,13 +70,20 @@ class ConvexPolygon(Hitbox):
                 return False
         return True
 
-    def move(self, v, who_wants=False):
-        if v.y < -800:
-            print(v)
-        super().move(v, who_wants)
-        self.__pos_top_left += v
-        for i in range(len(self.points)):
-            self.points[i] += v
+    def move(self, v, who_wants=False, with_collision_control=True):
+        """
+        It moves the hitbox of v. It also moves all his connected world objects.
+
+        :param v: The vector describing the movement
+        :param who_wants: which class did call this function. It is used in order to prevent infinite loops.
+        In fact, this function calls the move function of worldObjects, which move all the connected hitboxes.
+        :param with_collision_control: It must not be disabled, unless you want it to teleport, or it is used in the
+        collision's functions.
+        """
+        super().move(v, who_wants, with_collision_control)
+        if not with_collision_control:
+            for i in range(len(self.points)):
+                self.points[i] += v
 
     def draw(self, drawer):
         drawer.draw_convex_polygon(self)
