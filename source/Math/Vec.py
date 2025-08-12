@@ -35,6 +35,9 @@ class Vec:
         elif isinstance(other, Vec):
             return Vec(self.__x * other.__x, self.__y * other.__y)
 
+    def __rmul__(self, other):
+        return self * other
+
     def __truediv__(self, other):
         if isinstance(other, int) or isinstance(other, float):
             return Vec(self.__x / other, self.__y / other)
@@ -55,6 +58,9 @@ class Vec:
 
     def __str__(self):
         return f"vec({self.__x}, {self.__y})"
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
 
 # standard functionalities  ---------------------------------------------------------------------------------------
     def norm(self):
