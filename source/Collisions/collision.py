@@ -36,7 +36,7 @@ def poly_poly_collision_dir(points1, points2, speed):
     tangent = Vec(0, 0)
 
     # POV of points1
-    segments = [(points1[i], points1[i] - speed) for i in range(len(points2))]
+    segments = [(points1[i], points1[i] - speed) for i in range(len(points1))]
     for segment in segments:
         for i in range(len(points2)):
             intersection = segment_segment_intersection_t_u(*segment, points2[i - 1], points2[i])
@@ -78,14 +78,18 @@ def resolve_collision(hitbox1, hitbox2, speed) -> tuple[tuple[float, float], Vec
     return collision_repartition(hitbox1, hitbox2, d), t
 
 
-def resolve_collisions(fixes_hitboxes, movable_hitboxes):
+def resolve_collisions(fixes_hitboxes: list[Hitbox], movable_hitboxes: list[Hitbox]):
     """ It moves the hitboxes of their speed, and rewind the time until they are no more in collision """
     assert all_fixes(fixes_hitboxes), "fixes_hitboxes must be fixes"
     assert all_movables(movable_hitboxes), "movable_hitboxes must not be fixes"
 
-    # TODO: make all the movables go 3-4 pixels upper in order to make them continue even if there is a little gap.
-
+    # Pre collision resets
     for hitbox in fixes_hitboxes + movable_hitboxes: hitbox.pre_collision_reset()
+
+    UP_GAP_PASS = 4
+    for hitbox in movable_hitboxes:
+        hitbox.move(Vec(0, -UP_GAP_PASS), with_collision_control=False)
+        hitbox.move(Vec(0, UP_GAP_PASS), with_collision_control=True)
 
     # X coordinate
     movable_rewinds = [0.0] * len(movable_hitboxes)

@@ -18,8 +18,9 @@ class Model:
         self.__movables = []
         self.__worldObjects = []
         self.player = self.add_world_object(Player(Vec(0, 100)))
-        self.add_world_object(AxisAlignedPlatform(Vec(0, 200), Vec(195, 10)))
-        self.add_world_object(AxisAlignedPlatform(Vec(200, 200), Vec(300, 1)))
+        self.add_world_object(AxisAlignedPlatform(Vec(0, 200), Vec(95, 10)))
+        self.add_world_object(AxisAlignedPlatform(Vec(100, 195), Vec(100, 1)))
+        self.add_world_object(Platform([Vec(200, 200), Vec(400, 0), Vec(300, 200)]))
 
 # update ---------------------------------------------------------------------------------------------------------------
     def update(self, inputs):
