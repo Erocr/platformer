@@ -1,7 +1,7 @@
-from Math.Vec import *
+from View.Drawable import *
 
 
-class WorldObject:
+class WorldObject(Drawable):
     """
     A WorldObject is an object in the game world.
 

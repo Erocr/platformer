@@ -1,7 +1,7 @@
-from Math.Vec import *
+from View.Drawable import *
 
 
-class Hitbox:
+class Hitbox(Drawable):
     """
     A Hitbox have a speed.
     You must move the Hitbox changing the speed, otherwise there will be some collision problems.
@@ -13,6 +13,7 @@ class Hitbox:
         self.__fix = fix  # Must not be changed after creation !!
         self.worldObjectsConnected = []
         self.speed = Vec(0, 0)
+        self.collisionInfos = []
 
 # getter ---------------------------------------------------------------------------------------------------------------
 
@@ -33,21 +34,31 @@ class Hitbox:
     def draw(self, drawer):
         assert False, "forgot to implement the draw function !"
 
+# resets ---------------------------------------------------------------------------------------------------------------
+
+    def pre_collision_reset(self):
+        """ Must be called before the collision """
+        self.collisionInfos = []
+
 # world objects management ---------------------------------------------------------------------------------------------
 
-    def connect_world_object(self, worldObject, both_sides=False):
-        self.worldObjectsConnected.append(worldObject)
+    def connect_world_object(self, world_object, both_sides=False):
+        self.worldObjectsConnected.append(world_object)
         if both_sides:
-            worldObject.connect_hitbox(self)
+            world_object.connect_hitbox(self)
 
-    def disconnect_world_object(self, worldObject, both_sides=False):
-        self.worldObjectsConnected.remove(worldObject)
+    def disconnect_world_object(self, world_object, both_sides=False):
+        self.worldObjectsConnected.remove(world_object)
         if both_sides:
-            worldObject.disconnect_hitbox(self)
+            world_object.disconnect_hitbox(self)
 
-    def is_connected_with(self, worldObject):
-        return worldObject in self.worldObjectsConnected
+    def is_connected_with(self, world_object):
+        return world_object in self.worldObjectsConnected
 
+# collisionInfos management --------------------------------------------------------------------------------------------
+    def add_collision_info(self, coll_info):
+        if coll_info is not None:
+            self.collisionInfos.append(coll_info)
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Hitboxes examples ----------------------------------------------------------------------------------------------------
