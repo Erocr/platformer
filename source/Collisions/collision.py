@@ -69,6 +69,8 @@ def resolve_collision(hitbox1, hitbox2, speed) -> tuple[tuple[float, float], Vec
         d, t = poly_poly_collision_dir(hitbox1.points, hitbox2.points, speed)
     else:
         assert False, f"collisions for {type(hitbox1)} and {type(hitbox2)} has not been implemented"
+    # TODO: check that if two movables enters in collision, they are properly separated, could not work due to the code
+    #  below
     if d > 1:
         d = 1
     if d != 0:
@@ -80,6 +82,8 @@ def resolve_collisions(fixes_hitboxes, movable_hitboxes):
     """ It moves the hitboxes of their speed, and rewind the time until they are no more in collision """
     assert all_fixes(fixes_hitboxes), "fixes_hitboxes must be fixes"
     assert all_movables(movable_hitboxes), "movable_hitboxes must not be fixes"
+
+    # TODO: make all the movables go 3-4 pixels upper in order to make them continue even if there is a little gap.
 
     for hitbox in fixes_hitboxes + movable_hitboxes: hitbox.pre_collision_reset()
 

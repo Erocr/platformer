@@ -10,6 +10,7 @@ def main():
     model = Model()
 
     while not inputs.quit:
+        # TODO: implements fixed update time step, variable rendering
         inputs.update()
 
         model.update(inputs)
